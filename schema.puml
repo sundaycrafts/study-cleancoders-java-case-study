@@ -1,22 +1,23 @@
 @startuml
+allow_mixing
+database Database
+
 package Core {
   object PresentCodecastUsecase
   class Codecast
   class User
   class License
-  object Something
+  interface Gateway
+  class MockGateway
 }
 
 PresentCodecastUsecase --> Codecast
 PresentCodecastUsecase --> User
 PresentCodecastUsecase --> License
-PresentCodecastUsecase --> Something
-Something <-- Database
+PresentCodecastUsecase --> Gateway
+Gateway <|-- MockGateway
+MockGateway --> Database
 
 package GUI {
-}
-
-package Database {
-  object Database
 }
 @enduml
