@@ -1,5 +1,8 @@
-package com.github.sundaycrafts.cleancoders.casestudy;
+package com.github.sundaycrafts.cleancoders.casestudy.assertion;
 
+import com.github.sundaycrafts.cleancoders.casestudy.Codecast;
+import com.github.sundaycrafts.cleancoders.casestudy.Context;
+import com.github.sundaycrafts.cleancoders.casestudy.MockGateway;
 import org.junit.*;
 import java.util.List;
 import static org.junit.Assert.*;
