@@ -1,3 +1,10 @@
 @startuml
 object PresentCodecastUsecase
+class Codecast
+class User
+class License
+
+PresentCodecastUsecase --> Codecast
+PresentCodecastUsecase --> User
+PresentCodecastUsecase --> License
 @enduml
