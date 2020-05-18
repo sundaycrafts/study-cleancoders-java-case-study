@@ -1,10 +1,22 @@
 @startuml
-object PresentCodecastUsecase
-class Codecast
-class User
-class License
+package Core {
+  object PresentCodecastUsecase
+  class Codecast
+  class User
+  class License
+  object Something
+}
 
 PresentCodecastUsecase --> Codecast
 PresentCodecastUsecase --> User
 PresentCodecastUsecase --> License
+PresentCodecastUsecase --> Something
+Something <-- Database
+
+package GUI {
+}
+
+package Database {
+  object Database
+}
 @enduml
