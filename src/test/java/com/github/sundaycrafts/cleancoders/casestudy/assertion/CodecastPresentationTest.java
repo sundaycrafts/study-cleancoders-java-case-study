@@ -20,7 +20,7 @@ public class CodecastPresentationTest {
 
     @Test
     public void NoPresentCodecastAfterDeletedAllCodecasts() {
-        List<Map<String , String>> codecastInfos = new ArrayList<>() {
+        List<Map<String , String>> codecastInfos = new ArrayList<Map<String, String>>() {
             {
                 add(
                     new HashMap<String, String>() {
