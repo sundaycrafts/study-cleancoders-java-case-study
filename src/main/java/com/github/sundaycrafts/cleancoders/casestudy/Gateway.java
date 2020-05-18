@@ -1,8 +1,10 @@
 package com.github.sundaycrafts.cleancoders.casestudy;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public interface Gateway {
-    List<Codecast> findAllCodecasts();
+    ArrayList<Codecast> findAllCodecasts();
     void delete(Codecast codecast);
+
+    void save(Codecast codecast);
 }

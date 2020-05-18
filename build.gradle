@@ -33,3 +33,7 @@ application {
     // Define the main class for the application.
     mainClassName = 'com.github.sundaycrafts.cleancoders.casestudy.App'
 }
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs << '-Xlint:unchecked'
+}

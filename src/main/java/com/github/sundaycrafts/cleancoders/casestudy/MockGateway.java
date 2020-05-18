@@ -1,16 +1,23 @@
 package com.github.sundaycrafts.cleancoders.casestudy;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MockGateway implements Gateway {
-    @Override
-    public List<Codecast> findAllCodecasts() {
-        return new ArrayList<Codecast>();
+    private ArrayList<Codecast> codecasts;
+
+    public MockGateway() {
+        this.codecasts = new ArrayList<Codecast>();
     }
 
-    @Override
-    public void delete(Codecast codecast) {
+    public ArrayList<Codecast> findAllCodecasts() {
+        return this.codecasts;
+    }
 
+    public void delete(Codecast codecast) {
+        codecasts.remove(codecast);
+    }
+
+    public void save(Codecast codecast) {
+        this.codecasts.add(codecast);
     }
 }
