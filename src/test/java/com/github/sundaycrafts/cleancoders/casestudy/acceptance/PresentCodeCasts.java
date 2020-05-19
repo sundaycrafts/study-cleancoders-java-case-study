@@ -3,6 +3,7 @@ package com.github.sundaycrafts.cleancoders.casestudy.acceptance;
 import com.github.sundaycrafts.cleancoders.casestudy.Codecast;
 import com.github.sundaycrafts.cleancoders.casestudy.Context;
 import com.github.sundaycrafts.cleancoders.casestudy.MockGateway;
+import com.github.sundaycrafts.cleancoders.casestudy.User;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
@@ -39,6 +40,11 @@ public class PresentCodeCasts {
     public void deleteAllCodecasts() {
         List<Codecast> codecasts = Context.gateway.findAllCodecasts();
         new ArrayList<Codecast>(codecasts).forEach(codecast -> Context.gateway.delete(codecast));
+    }
+
+    @Given("user {string}")
+    public void addUser (String username) {
+        Context.gateway.save(new User(username));
     }
 
     @When("the user {string} logged in")

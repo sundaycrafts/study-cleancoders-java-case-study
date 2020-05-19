@@ -8,6 +8,7 @@ Feature: present code casts
       | B     | 01/02/2020    |
       | C     | 01/03/2020    |
     Given no codecast
+    Given user "U"
     When the user "U" logged in
     Then cannot see any codecasts
 
