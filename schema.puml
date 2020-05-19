@@ -9,6 +9,11 @@ package Core {
   class License
   interface Gateway
   class MockGateway
+  object LoginUsecase
+  interface Gatekeeper {
+    ---
+    + setLoginUser
+  }
 }
 
 PresentCodecastUsecase --> Codecast
@@ -17,7 +22,13 @@ PresentCodecastUsecase --> License
 PresentCodecastUsecase --> Gateway
 Gateway <|-- MockGateway
 MockGateway --> Database
+LoginUsecase --> Gatekeeper
 
 package GUI {
 }
+
+object Session
+cloud Somewhere
+Somewhere --> Session
+Session ..* Gatekeeper : validated
 @enduml
