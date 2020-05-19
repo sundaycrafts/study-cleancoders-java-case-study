@@ -10,6 +10,7 @@ package Core {
   interface Gateway
   class MockGateway
   object LoginUsecase
+  class PresentableCodecast
   interface Gatekeeper {
     ---
     + setLoginUser
@@ -25,7 +26,11 @@ MockGateway --> Database
 LoginUsecase --> Gatekeeper
 
 package GUI {
+  object Presenter
 }
+
+PresentableCodecast --> Presenter
+PresentCodecastUsecase *.. PresentableCodecast : generate
 
 object Session
 cloud Somewhere

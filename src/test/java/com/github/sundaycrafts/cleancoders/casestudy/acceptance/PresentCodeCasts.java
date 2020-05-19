@@ -15,6 +15,7 @@ import java.util.Optional;
 import static org.junit.Assert.*;
 
 public class PresentCodeCasts {
+    private final PresentCodecastUseCase useCase = new PresentCodecastUseCase();
     private final GateKeeper gateKeeper = new GateKeeper();
 
     @Before
@@ -57,7 +58,8 @@ public class PresentCodeCasts {
     }
 
     @Then("cannot see any codecasts")
-    public void i_should_be_told() {
-        assertTrue(false);
+    public void countOfCodecastsPresented() {
+        List<PresentableCodecast> presentations = useCase.presentCodecasts(gateKeeper.getLoggedInUser());
+        assertEquals(0, presentations.size());
     }
 }
