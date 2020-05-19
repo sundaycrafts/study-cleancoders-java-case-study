@@ -21,13 +21,8 @@ public class PresentCodeCasts {
         Context.gateway = new MockGateway();
     }
 
-    @Given("User {string}")
-    public void loginUser(String username) {
-        assertTrue(false);
-    }
-
-    @Given("some codecasts are saved")
-    public void addCodecasts(DataTable table) {
+    @Given("codecasts")
+    public void putSomeCodecast(DataTable table) {
         List<Map<String, String>> rows = table.asMaps(String.class, String.class);
 
         rows.forEach(row -> {
@@ -37,10 +32,13 @@ public class PresentCodeCasts {
             Context.gateway.save(codecast);
         });
 
+        assertTrue(Context.gateway.findAllCodecasts().size() > 0);
+    }
+
+    @Given("no codecast")
+    public void deleteAllCodecasts() {
         List<Codecast> codecasts = Context.gateway.findAllCodecasts();
         new ArrayList<Codecast>(codecasts).forEach(codecast -> Context.gateway.delete(codecast));
-
-        assertTrue(Context.gateway.findAllCodecasts().size() == 0);
     }
 
     @When("the user {string} logged in")
