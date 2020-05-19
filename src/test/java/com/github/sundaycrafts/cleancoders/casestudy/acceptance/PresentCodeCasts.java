@@ -1,9 +1,6 @@
 package com.github.sundaycrafts.cleancoders.casestudy.acceptance;
 
-import com.github.sundaycrafts.cleancoders.casestudy.Codecast;
-import com.github.sundaycrafts.cleancoders.casestudy.Context;
-import com.github.sundaycrafts.cleancoders.casestudy.MockGateway;
-import com.github.sundaycrafts.cleancoders.casestudy.User;
+import com.github.sundaycrafts.cleancoders.casestudy.*;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
@@ -13,10 +10,13 @@ import io.cucumber.java.en.Then;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class PresentCodeCasts {
+    private final GateKeeper gateKeeper = new GateKeeper();
+
     @Before
     public void setUp() {
         Context.gateway = new MockGateway();
@@ -48,8 +48,12 @@ public class PresentCodeCasts {
     }
 
     @When("the user {string} logged in")
-    public void i_ask_whether_it_s_Friday_yet(String user) {
-        assertTrue(false);
+    public void loginUser(String username) throws RuntimeException {
+        Optional<User> user = Context.gateway.findUser(username);
+        user.ifPresentOrElse(u -> {
+            gateKeeper.setLoggedInUser(u);
+            assertEquals(gateKeeper.getLoggedInUser(), u);
+        }, () -> {throw new RuntimeException();});
     }
 
     @Then("cannot see any codecasts")

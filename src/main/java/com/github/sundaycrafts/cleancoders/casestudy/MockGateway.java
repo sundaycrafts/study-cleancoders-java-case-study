@@ -2,6 +2,7 @@ package com.github.sundaycrafts.cleancoders.casestudy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class MockGateway implements Gateway {
     private List<Codecast> codecasts;
@@ -26,5 +27,9 @@ public class MockGateway implements Gateway {
 
     public void save(User user) {
         users.add(user);
+    }
+
+    public Optional<User> findUser(String username) {
+        return users.stream().filter(user -> username.equals(user.getUsername())).findAny();
     }
 }
