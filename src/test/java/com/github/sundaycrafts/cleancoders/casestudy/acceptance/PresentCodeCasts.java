@@ -40,7 +40,9 @@ public class PresentCodeCasts {
     @Given("no codecast")
     public void deleteAllCodecasts() {
         List<Codecast> codecasts = Context.gateway.findAllCodecasts();
-        new ArrayList<Codecast>(codecasts).forEach(codecast -> Context.gateway.delete(codecast));
+        new ArrayList<>(codecasts).forEach(codecast -> Context.gateway.delete(codecast));
+
+        assertEquals(Context.gateway.findAllCodecasts().size(), 0);
     }
 
     @Given("user {string}")
