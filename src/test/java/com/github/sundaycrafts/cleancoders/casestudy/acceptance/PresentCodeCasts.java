@@ -64,4 +64,21 @@ public class PresentCodeCasts {
         List<PresentableCodecast> presentations = useCase.presentCodecasts(gateKeeper.getLoggedInUser());
         assertEquals(0, presentations.size());
     }
+
+    @When("license for user {string} able to view {string}")
+    public void createLicenceForSpecificCodecast(String username, String codecastTitle) {
+        Optional<User> user = Context.gateway.findUser(username);
+        user.ifPresentOrElse(u -> {
+            Codecast codecast = Context.gateway.findCodecastByTitle(codecastTitle);
+            License license = new License(user, codecast);
+            Context.gateway.save(license);
+            useCase.isLicensedToViewCodecast();
+            assertTrue(false);
+        }, () -> {throw new RuntimeException();});
+    }
+
+    @Then("the user {string} can see codecasts in chronological order")
+    public void theUserCanSeeLicensedCodecastSForThemInChronologicalOrder(String username) {
+        assertTrue(false);
+    }
 }
