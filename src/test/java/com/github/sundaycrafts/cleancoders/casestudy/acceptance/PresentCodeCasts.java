@@ -68,13 +68,19 @@ public class PresentCodeCasts {
     @When("license for user {string} able to view {string}")
     public void createLicenceForSpecificCodecast(String username, String codecastTitle) {
         Optional<User> user = Context.gateway.findUser(username);
-        user.ifPresentOrElse(u -> {
-            Codecast codecast = Context.gateway.findCodecastByTitle(codecastTitle);
-            License license = new License(user, codecast);
-            Context.gateway.save(license);
-            useCase.isLicensedToViewCodecast();
-            assertTrue(false);
-        }, () -> {throw new RuntimeException();});
+        if (user.isEmpty()) {
+            throw new RuntimeException(String.format("No user %s found", username));
+        }
+
+        Optional<Codecast> codecast = Context.gateway.findCodecastByTitle(codecastTitle);
+        if (codecast.isEmpty()) {
+            throw new RuntimeException(String.format("No code cast for user %s", username));
+        }
+
+        License license = new License(user.get(), codecast.get());
+        Context.gateway.save(license);
+        useCase.isLicensedToViewCodecast(user.get(), codecast.get());
+        assertTrue(false);
     }
 
     @Then("the user {string} can see codecasts in chronological order")

@@ -11,4 +11,8 @@ public class Codecast {
     public void setPublicationDate(String publicationDate) {
         this.publicationDate = publicationDate;
     }
+
+    public String getTitle() {
+        return title;
+    }
 }

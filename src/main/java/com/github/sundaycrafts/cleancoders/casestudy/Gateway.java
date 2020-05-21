@@ -10,6 +10,11 @@ public interface Gateway {
     void save(Codecast codecast);
 
     void save(User user);
+    
+    void save(License license);
 
     Optional<User> findUser(String username);
+
+    Optional<Codecast> findCodecastByTitle(String codecastTitle);
+
 }
