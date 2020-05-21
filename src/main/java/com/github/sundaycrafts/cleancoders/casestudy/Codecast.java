@@ -15,4 +15,8 @@ public class Codecast {
     public String getTitle() {
         return title;
     }
+
+    public boolean isSame(Codecast codecast) {
+        return true;
+    }
 }

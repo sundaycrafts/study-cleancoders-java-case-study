@@ -9,6 +9,7 @@ public class PresentCodecastUseCase {
     }
 
     public boolean isLicensedToViewCodecast(User user, Codecast codecast) {
-        return true;
+        List<License> licenses = Context.gateway.findLicenseForUserAndCodecast(user, codecast);
+        return !licenses.isEmpty();
     }
 }
