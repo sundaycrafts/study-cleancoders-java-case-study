@@ -1,4 +1,4 @@
-package com.github.sundaycrafts.cleancoders.casestudy.acceptance;
+package com.github.sundaycrafts.cleancoders.casestudy;
 
 import com.github.sundaycrafts.cleancoders.casestudy.User;
 
