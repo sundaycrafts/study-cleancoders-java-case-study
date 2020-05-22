@@ -1,7 +1,5 @@
 package com.github.sundaycrafts.cleancoders.casestudy;
 
-import com.google.common.collect.Lists;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,29 +25,25 @@ public class MockGateway implements Gateway {
         codecasts.remove(codecast);
     }
 
-    public void save(Codecast codecast) {
-        this.codecasts.add(codecast);
+    public Codecast save(Codecast codecast) {
+        this.codecasts.add((Codecast) establishId(codecast));
+        return codecast;
     }
 
     public User save(User user) {
-        establishId(user);
-        users.add(user);
+        users.add((User) establishId(user));
         return user;
     }
 
-    public void save(License license) {
-        establishId(license);
-        licenses.add(license);
+    public License save(License license) {
+        licenses.add((License) establishId(license));
+        return license;
     }
 
-    private void establishId(User user) {
-        if(user.getId() == null)
-            user.setId(UUID.randomUUID().toString());
-    }
-
-    private void establishId(License license) {
-        if(license.getId() == null)
-            license.setId(UUID.randomUUID().toString());
+    private Entity establishId(Entity entity) {
+        if(entity.getId() == null)
+            entity.setId(UUID.randomUUID().toString());
+        return entity;
     }
 
     public Optional<User> findUser(String username) {

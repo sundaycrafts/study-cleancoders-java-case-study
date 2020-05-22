@@ -1,6 +1,6 @@
 package com.github.sundaycrafts.cleancoders.casestudy;
 
-public class Codecast {
+public class Codecast extends Entity {
     private String title;
     private String publicationDate;
 
@@ -14,9 +14,5 @@ public class Codecast {
 
     public String getTitle() {
         return title;
-    }
-
-    public boolean isSame(Codecast codecast) {
-        return true;
     }
 }

@@ -7,11 +7,11 @@ public interface Gateway {
     List<Codecast> findAllCodecasts();
     void delete(Codecast codecast);
 
-    void save(Codecast codecast);
+    Codecast save(Codecast codecast);
 
     User save(User user);
 
-    void save(License license);
+    License save(License license);
 
     Optional<User> findUser(String username);
 

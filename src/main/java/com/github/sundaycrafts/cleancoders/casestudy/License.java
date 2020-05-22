@@ -1,9 +1,8 @@
 package com.github.sundaycrafts.cleancoders.casestudy;
 
-public class License {
+public class License extends Entity {
     private User user;
     private Codecast codecast;
-    private String id;
 
     public License(User user, Codecast codecast) {
         this.user = user;
@@ -16,13 +15,5 @@ public class License {
 
     public Codecast getCodecast() {
         return codecast;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getId() {
-        return id;
     }
 }

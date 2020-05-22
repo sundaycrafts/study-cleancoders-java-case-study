@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PresentCodecastUseCase {
-    public List<PresentableCodecast> presentCodecasts(User loggedInUser) {
+    public List<PresentableCodecast> presentCodecasts(Entity loggedInUser) {
         return new ArrayList<PresentableCodecast>();
     }
 
