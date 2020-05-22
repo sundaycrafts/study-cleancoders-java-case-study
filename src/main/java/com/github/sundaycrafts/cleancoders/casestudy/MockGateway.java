@@ -31,9 +31,10 @@ public class MockGateway implements Gateway {
         this.codecasts.add(codecast);
     }
 
-    public void save(User user) {
+    public User save(User user) {
         establishId(user);
         users.add(user);
+        return user;
     }
 
     public void save(License license) {

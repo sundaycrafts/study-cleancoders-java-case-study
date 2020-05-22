@@ -13,9 +13,7 @@ public class PresentCodecastUseCaseTest {
     @Before
     public void setUp() {
         Context.gateway = new MockGateway();
-        user = new User("User");
-        Context.gateway.save(user);
-
+        user = Context.gateway.save(new User("User"));
         codecast = new Codecast();
         useCase = new PresentCodecastUseCase();
     }
@@ -34,8 +32,7 @@ public class PresentCodecastUseCaseTest {
 
     @Test
     public void userWithViewLicense_cannotViewOtherUsersCodecast() throws Exception {
-        User otherUser = new User("otherUser");
-        Context.gateway.save(user);
+        User otherUser = Context.gateway.save(new User("otherUser"));
         License viewLicense = new License(user, codecast);
         Context.gateway.save(viewLicense);
         assertFalse(useCase.isLicensedToViewCodecast(otherUser, codecast));

@@ -31,6 +31,12 @@ public class UserTest {
         u2.setId("u1ID");
 
         assertTrue(u1.isSame(u2));
+    }
 
+    @Test
+    public void usersWithNullAreNeverSame() throws Exception {
+        User u1 = new User("u1");
+        User u2 = new User("u2");
+        assertFalse(u1.isSame(u2));
     }
 }

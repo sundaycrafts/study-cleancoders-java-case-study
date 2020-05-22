@@ -1,5 +1,7 @@
 package com.github.sundaycrafts.cleancoders.casestudy;
 
+import java.util.Objects;
+
 public class User {
     private String username;
     private String id;
@@ -13,7 +15,7 @@ public class User {
     }
 
     public boolean isSame(User user) {
-        return id.equals(user.id);
+        return id != null && Objects.equals(id, user.id);
     }
 
     public void setId(String id) {
