@@ -23,7 +23,7 @@ Feature: present code casts
     When license for user "U" able to view "A"
     Then the user "U" can see codecasts in chronological order
       | title | picture | description | viewable | downloadable |
-      | C     | C       | C           | false    | false        |
-      | A     | A       | A           | true     | false        |
-      | B     | B       | B           | false    | false        |
+      | C     | C       | C           | -        | -            |
+      | A     | A       | A           | +        | -            |
+      | B     | B       | B           | -        | -            |
 

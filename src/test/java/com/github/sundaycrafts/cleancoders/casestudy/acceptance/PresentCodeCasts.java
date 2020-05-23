@@ -7,10 +7,8 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 
@@ -84,7 +82,22 @@ public class PresentCodeCasts {
   }
 
   @Then("the user {string} can see codecasts in chronological order")
-  public void theUserCanSeeLicensedCodecastSForThemInChronologicalOrder(String username) {
-    assertTrue(false);
+  public void theUserCanSeeLicensedCodecastSForThemInChronologicalOrder(String username, DataTable table) {
+    User loggedInUser = gateKeeper.getLoggedInUser();
+    PresentCodecastUseCase useCase = new PresentCodecastUseCase();
+    List<PresentableCodecast> presentableCodecasts = useCase.presentCodecasts(loggedInUser);
+    List<Map<String, String>> queryResponse = presentableCodecasts.stream().map(pcc -> new HashMap<String, String>() {{
+      put("title", pcc.title);
+      put("picture", pcc.title);
+      put("description", pcc.title);
+      put("viewable", pcc.isViewable ? "+" : "-");
+      put("downloadable", "-");
+    }}).collect(Collectors.toList());
+
+    List<Map<String, String>> rows = table.asMaps(String.class, String.class);
+
+    for (int i = 0; i < rows.size(); i++) {
+      assertEquals(rows.get(i).get("title"), queryResponse.get(i).get("title"));
+    }
   }
 }
