@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PresentCodecastUseCase {
-  private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+  private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
   public List<PresentableCodecast> presentCodecasts(User loggedInUser) {
     ArrayList<PresentableCodecast> presentableCodecasts = new ArrayList<>();
@@ -15,6 +15,7 @@ public class PresentCodecastUseCase {
         pcc.title = codecast.getTitle();
         pcc.publicationDate = dateFormat.format(codecast.getPublicationDate());
         pcc.isViewable = isLicensedToViewCodecast(loggedInUser, codecast);
+        pcc.isDownloadable = isLicensedToDownloadCodecast(loggedInUser, codecast);
         presentableCodecasts.add(pcc);
       }
     );
@@ -23,6 +24,11 @@ public class PresentCodecastUseCase {
 
   public boolean isLicensedToViewCodecast(User user, Codecast codecast) {
     List<License> licenses = Context.gateway.findLicenseForUserAndCodecast(user, codecast);
-    return !licenses.isEmpty();
+    return licenses.stream().anyMatch(l -> l instanceof ViewableLicense);
+  }
+
+  public boolean isLicensedToDownloadCodecast(User user, Codecast codecast) {
+    List<License> licenses = Context.gateway.findLicenseForUserAndCodecast(user, codecast);
+    return licenses.stream().anyMatch(l -> l instanceof DownloadableLicense);
   }
 }

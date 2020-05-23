@@ -11,13 +11,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.junit.Assert.*;
 
-public class PresentCodeCasts {
+public class CodecastPresentation {
   private final PresentCodecastUseCase useCase = new PresentCodecastUseCase();
   private final GateKeeper gateKeeper = new GateKeeper();
-  private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+  private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
   @Before
   public void setUp() {
@@ -73,19 +74,39 @@ public class PresentCodeCasts {
   }
 
   @When("license for user {string} able to view {string}")
-  public void createLicenceForSpecificCodecast(String username, String codecastTitle) {
+  public void createLicenceForViewing(String username, String codecastTitle) {
     Optional<User> user = Context.gateway.findUser(username);
-    if (user.isEmpty()) {
-      throw new RuntimeException(String.format("No user %s found", username));
-    }
+    if (user.isEmpty()) throw new RuntimeException(String.format("No user %s found", username));
 
     Optional<Codecast> codecast = Context.gateway.findCodecastByTitle(codecastTitle);
-    if (codecast.isEmpty()) {
-      throw new RuntimeException(String.format("No code cast for user %s", username));
-    }
+    if (codecast.isEmpty()) throw new RuntimeException(String.format("No code cast for user %s", username));
+
+    Context.gateway.save(new ViewableLicense(user.get(), codecast.get()));
+    assertTrue(useCase.isLicensedToViewCodecast(user.get(), codecast.get()));
+  }
+
+  @When("license for user {string} able to download {string}")
+  public void createLicenceForDownload(String username, String codecastTitle) {
+    Optional<User> user = Context.gateway.findUser(username);
+    if (user.isEmpty()) throw new RuntimeException(String.format("No user %s found", username));
+
+    Optional<Codecast> codecast = Context.gateway.findCodecastByTitle(codecastTitle);
+    if (codecast.isEmpty()) throw new RuntimeException(String.format("No code cast for user %s", username));
+
+    Context.gateway.save(new DownloadableLicense(user.get(), codecast.get()));
+    assertTrue(useCase.isLicensedToDownloadCodecast(user.get(), codecast.get()));
+  }
+
+  @Then("lisence for user {string} able to download {string}")
+  public void createLicenceForDownloading(String username, String codecastTitle) {
+    Optional<User> user = Context.gateway.findUser(username);
+    if (user.isEmpty()) throw new RuntimeException(String.format("No user %s found", username));
+
+    Optional<Codecast> codecast = Context.gateway.findCodecastByTitle(codecastTitle);
+    if (codecast.isEmpty()) throw new RuntimeException(String.format("No code cast for user %s", username));
 
     Context.gateway.save(new License(user.get(), codecast.get()));
-    assertTrue(useCase.isLicensedToViewCodecast(user.get(), codecast.get()));
+    assertTrue(useCase.isLicensedToDownloadCodecast(user.get(), codecast.get()));
   }
 
   @Then("the user {string} can see codecasts in chronological order")
@@ -103,8 +124,6 @@ public class PresentCodeCasts {
 
     List<Map<String, String>> rows = table.asMaps(String.class, String.class);
 
-    for (int i = 0; i < rows.size(); i++) {
-      assertEquals(rows.get(i).get("title"), queryResponse.get(i).get("title"));
-    }
+    IntStream.range(0, rows.size()).forEach(i -> assertEquals(rows.get(i).get("title"), queryResponse.get(i).get("title")));
   }
 }

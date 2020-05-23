@@ -30,7 +30,7 @@ public class PresentCodecastUseCaseTest {
 
   @Test
   public void userWithViewLicense_canViewCodecast() {
-    License viewLicense = new License(user, codecast);
+    License viewLicense = new ViewableLicense(user, codecast);
     Context.gateway.save(viewLicense);
     assertTrue(useCase.isLicensedToViewCodecast(user, codecast));
   }
@@ -38,7 +38,7 @@ public class PresentCodecastUseCaseTest {
   @Test
   public void userWithViewLicense_cannotViewOtherUsersCodecast() {
     User otherUser = Context.gateway.save(new User("otherUser"));
-    License viewLicense = new License(user, codecast);
+    License viewLicense = new ViewableLicense(user, codecast);
     Context.gateway.save(viewLicense);
     assertFalse(useCase.isLicensedToViewCodecast(otherUser, codecast));
   }
@@ -73,9 +73,18 @@ public class PresentCodecastUseCaseTest {
 
   @Test
   public void presentedCodecastIsViewableIfLicenseExists() {
-    Context.gateway.save(new License(user, codecast));
+    Context.gateway.save(new ViewableLicense(user, codecast));
     List<PresentableCodecast> presentableCodecasts = useCase.presentCodecasts(user);
     PresentableCodecast presentableCodecast = presentableCodecasts.get(0);
     assertTrue(presentableCodecast.isViewable);
+  }
+
+  @Test
+  public void presentedCodecastIsDownloadableIfDownloadLicenseExists() {
+    Context.gateway.save(new DownloadableLicense(user, codecast));
+    List<PresentableCodecast> presentableCodecasts = useCase.presentCodecasts(user);
+    PresentableCodecast downloadableCodecast = presentableCodecasts.get(0);
+    assertTrue(downloadableCodecast.isDownloadable);
+    assertFalse(downloadableCodecast.isViewable);
   }
 }
