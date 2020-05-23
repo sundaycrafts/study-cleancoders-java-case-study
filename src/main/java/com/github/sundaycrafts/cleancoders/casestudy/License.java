@@ -1,19 +1,19 @@
 package com.github.sundaycrafts.cleancoders.casestudy;
 
 public class License extends Entity {
-    private User user;
-    private Codecast codecast;
+  private User user;
+  private Codecast codecast;
 
-    public License(User user, Codecast codecast) {
-        this.user = user;
-        this.codecast = codecast;
-    }
+  public License(User user, Codecast codecast) {
+    this.user = user;
+    this.codecast = codecast;
+  }
 
-    public User getUser() {
-        return user;
-    }
+  public User getUser() {
+    return user;
+  }
 
-    public Codecast getCodecast() {
-        return codecast;
-    }
+  public Codecast getCodecast() {
+    return codecast;
+  }
 }

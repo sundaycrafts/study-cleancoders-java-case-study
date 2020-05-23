@@ -4,18 +4,19 @@ import java.util.List;
 import java.util.Optional;
 
 public interface Gateway {
-    List<Codecast> findAllCodecasts();
-    void delete(Codecast codecast);
+  List<Codecast> findAllCodecasts();
 
-    Codecast save(Codecast codecast);
+  void delete(Codecast codecast);
 
-    User save(User user);
+  Codecast save(Codecast codecast);
 
-    License save(License license);
+  User save(User user);
 
-    Optional<User> findUser(String username);
+  License save(License license);
 
-    Optional<Codecast> findCodecastByTitle(String codecastTitle);
+  Optional<User> findUser(String username);
 
-    List<License> findLicenseForUserAndCodecast(User user, Codecast codecast);
+  Optional<Codecast> findCodecastByTitle(String codecastTitle);
+
+  List<License> findLicenseForUserAndCodecast(User user, Codecast codecast);
 }
