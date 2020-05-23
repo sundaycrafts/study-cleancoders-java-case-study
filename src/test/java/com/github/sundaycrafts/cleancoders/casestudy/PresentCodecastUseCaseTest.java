@@ -3,6 +3,9 @@ package com.github.sundaycrafts.cleancoders.casestudy;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -50,14 +53,15 @@ public class PresentCodecastUseCaseTest {
   @Test
   public void presentOneCodecast() {
     codecast.setTitle("Some Title");
-    codecast.setPublicationDate("Tomorrow");
+    Date now = new GregorianCalendar(2020, Calendar.MAY, 23).getTime();
+    codecast.setPublicationDate(now);
     List<PresentableCodecast> presentableCodecasts = useCase.presentCodecasts(user);
 
     assertEquals(1, presentableCodecasts.size());
 
     PresentableCodecast presentableCodecast = presentableCodecasts.get(0);
     assertEquals("Some Title", presentableCodecast.title);
-    assertEquals("Tomorrow", presentableCodecast.publicationDate);
+    assertEquals("23/05/2020", presentableCodecast.publicationDate);
   }
 
   @Test

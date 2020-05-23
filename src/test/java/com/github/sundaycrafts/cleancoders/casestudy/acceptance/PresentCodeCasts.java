@@ -7,6 +7,8 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -15,6 +17,7 @@ import static org.junit.Assert.*;
 public class PresentCodeCasts {
   private final PresentCodecastUseCase useCase = new PresentCodecastUseCase();
   private final GateKeeper gateKeeper = new GateKeeper();
+  private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
   @Before
   public void setUp() {
@@ -28,19 +31,23 @@ public class PresentCodeCasts {
     rows.forEach(row -> {
       Codecast codecast = new Codecast();
       codecast.setTitle(row.get("title"));
-      codecast.setPublicationDate(row.get("publicationDate"));
+      try {
+        codecast.setPublicationDate(simpleDateFormat.parse(row.get("publicationDate")));
+      } catch (ParseException e) {
+        throw new RuntimeException(e);
+      }
       Context.gateway.save(codecast);
     });
 
-    assertTrue(Context.gateway.findAllCodecasts().size() > 0);
+    assertTrue(Context.gateway.findAllCodecastsSortedChronologically().size() > 0);
   }
 
   @Given("no codecast")
   public void deleteAllCodecasts() {
-    List<Codecast> codecasts = Context.gateway.findAllCodecasts();
+    List<Codecast> codecasts = Context.gateway.findAllCodecastsSortedChronologically();
     new ArrayList<>(codecasts).forEach(codecast -> Context.gateway.delete(codecast));
 
-    assertEquals(Context.gateway.findAllCodecasts().size(), 0);
+    assertEquals(Context.gateway.findAllCodecastsSortedChronologically().size(), 0);
   }
 
   @Given("user {string}")

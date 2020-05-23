@@ -1,9 +1,6 @@
 package com.github.sundaycrafts.cleancoders.casestudy;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class MockGateway implements Gateway {
@@ -12,13 +9,15 @@ public class MockGateway implements Gateway {
   private ArrayList<License> licenses;
 
   public MockGateway() {
-    this.codecasts = new ArrayList<Codecast>();
-    this.users = new ArrayList<User>();
-    this.licenses = new ArrayList<License>();
+    this.codecasts = new ArrayList<>();
+    this.users = new ArrayList<>();
+    this.licenses = new ArrayList<>();
   }
 
-  public List<Codecast> findAllCodecasts() {
-    return this.codecasts;
+  public List<Codecast> findAllCodecastsSortedChronologically() {
+    List<Codecast> sortedCodecast = new ArrayList<>(codecasts);
+    sortedCodecast.sort(Comparator.comparing(Codecast::getPublicationDate));
+    return sortedCodecast;
   }
 
   public void delete(Codecast codecast) {
@@ -56,10 +55,6 @@ public class MockGateway implements Gateway {
   }
 
   public List<License> findLicenseForUserAndCodecast(User user, Codecast codecast) {
-    return licenses.stream().filter(license -> {
-      if (license.getUser().isSame(user) && license.getCodecast().isSame(codecast))
-        return true;
-      return false;
-    }).collect(Collectors.toList());
+    return licenses.stream().filter(license -> license.getUser().isSame(user) && license.getCodecast().isSame(codecast)).collect(Collectors.toList());
   }
 }
