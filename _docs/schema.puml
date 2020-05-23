@@ -3,34 +3,38 @@ allow_mixing
 database Database
 
 package Core {
-  object PresentCodecastUsecase
-  class Codecast
   class User
+  class Codecast
   class License
   interface Gateway
   class MockGateway
-  object LoginUsecase
-  class PresentableCodecast
+  class PresentableCodecast <<DS>>
+  class PresentCodecastUsecase
   interface Gatekeeper {
     ---
     + setLoginUser
   }
 }
 
+Database <-- MockGateway
+Gatekeeper --> User
 PresentCodecastUsecase --> Codecast
-PresentCodecastUsecase --> User
 PresentCodecastUsecase --> License
 PresentCodecastUsecase --> Gateway
-Gateway <|-- MockGateway
-MockGateway --> Database
-LoginUsecase --> Gatekeeper
+PresentCodecastUsecase --> User
+Gateway --> Codecast
+Gateway --> License
+Gateway --> User
+License --> Codecast
+License --> User
+MockGateway --|> Gateway
 
 package GUI {
   object Presenter
 }
 
-PresentableCodecast --> Presenter
-PresentCodecastUsecase *.. PresentableCodecast : generate
+Presenter --> PresentableCodecast
+PresentCodecastUsecase *.... PresentableCodecast : generate
 
 object Session
 cloud Somewhere
