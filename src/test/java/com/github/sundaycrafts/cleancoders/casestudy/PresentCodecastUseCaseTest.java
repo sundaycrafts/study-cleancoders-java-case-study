@@ -49,8 +49,15 @@ public class PresentCodecastUseCaseTest {
 
   @Test
   public void presentOneCodecast() {
+    codecast.setTitle("Some Title");
+    codecast.setPublicationDate("Tomorrow");
     List<PresentableCodecast> presentableCodecasts = useCase.presentCodecasts(user);
+
     assertEquals(1, presentableCodecasts.size());
+
+    PresentableCodecast presentableCodecast = presentableCodecasts.get(0);
+    assertEquals("Some Title", presentableCodecast.title);
+    assertEquals("Tomorrow", presentableCodecast.publicationDate);
   }
 
   @Test

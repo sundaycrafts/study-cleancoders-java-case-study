@@ -15,4 +15,8 @@ public class Codecast extends Entity {
   public String getTitle() {
     return title;
   }
+
+  public String getPublicationDate() {
+    return publicationDate;
+  }
 }
