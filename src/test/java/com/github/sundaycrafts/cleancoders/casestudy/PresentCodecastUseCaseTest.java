@@ -1,7 +1,7 @@
 package com.github.sundaycrafts.cleancoders.casestudy;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -9,14 +9,14 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import static com.github.sundaycrafts.cleancoders.casestudy.License.LicenseType.*;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PresentCodecastUseCaseTest {
   private User user;
   private Codecast codecast;
   private PresentCodecastUseCase useCase;
 
-  @Before
+  @BeforeEach
   public void setUp() {
     TestSetup.addInMemoryGatewaysToContext();
     user = Context.userGateway.save(new User("User"));

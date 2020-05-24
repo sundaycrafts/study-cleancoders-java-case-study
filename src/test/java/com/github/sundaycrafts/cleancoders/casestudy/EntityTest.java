@@ -1,12 +1,12 @@
 package com.github.sundaycrafts.cleancoders.casestudy;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class EntityTest {
   @Test
-  public void twoDifferentEntitysAreNotTheSame() throws Exception {
+  public void twoDifferentEntitysAreNotTheSame() {
     Entity e1 = new Entity();
     Entity e2 = new Entity();
 
@@ -17,7 +17,7 @@ public class EntityTest {
   }
 
   @Test
-  public void oneEntityIsTheSameAsItself() throws Exception {
+  public void oneEntityIsTheSameAsItself() {
     Entity e1 = new Entity();
     e1.setId("e1ID");
 
@@ -25,7 +25,7 @@ public class EntityTest {
   }
 
   @Test
-  public void usesWithTheSameIdAreTheSame() throws Exception {
+  public void usesWithTheSameIdAreTheSame() {
     Entity e1 = new Entity();
     Entity e2 = new Entity();
     e1.setId("e1ID");
@@ -35,7 +35,7 @@ public class EntityTest {
   }
 
   @Test
-  public void EntitysWithNullAreNeverSame() throws Exception {
+  public void EntitysWithNullAreNeverSame() {
     Entity e1 = new Entity();
     Entity e2 = new Entity();
     assertFalse(e1.isSame(e2));

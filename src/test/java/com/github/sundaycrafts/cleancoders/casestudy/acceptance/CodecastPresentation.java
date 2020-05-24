@@ -15,7 +15,7 @@ import java.util.stream.IntStream;
 
 import static com.github.sundaycrafts.cleancoders.casestudy.License.LicenseType.DOWNLOADING;
 import static com.github.sundaycrafts.cleancoders.casestudy.License.LicenseType.VIEWING;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CodecastPresentation {
   private final PresentCodecastUseCase useCase = new PresentCodecastUseCase();
