@@ -35,7 +35,7 @@ public class MockGateway implements Gateway {
   }
 
   public License save(License license) {
-    licenses.add((License) establishId(license));
+    licenses.add(license);
     return license;
   }
 

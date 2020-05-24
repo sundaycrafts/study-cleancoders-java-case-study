@@ -13,6 +13,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static com.github.sundaycrafts.cleancoders.casestudy.License.LicenseType.DOWNLOADING;
+import static com.github.sundaycrafts.cleancoders.casestudy.License.LicenseType.VIEWING;
 import static org.junit.Assert.*;
 
 public class CodecastPresentation {
@@ -81,8 +83,8 @@ public class CodecastPresentation {
     Optional<Codecast> codecast = Context.gateway.findCodecastByTitle(codecastTitle);
     if (codecast.isEmpty()) throw new RuntimeException(String.format("No code cast for user %s", username));
 
-    Context.gateway.save(new ViewableLicense(user.get(), codecast.get()));
-    assertTrue(useCase.isLicensedToViewCodecast(user.get(), codecast.get()));
+    Context.gateway.save(new License(VIEWING, user.get(), codecast.get()));
+    assertTrue(useCase.isLicencedFor(VIEWING, user.get(), codecast.get()));
   }
 
   @When("license for user {string} able to download {string}")
@@ -93,8 +95,8 @@ public class CodecastPresentation {
     Optional<Codecast> codecast = Context.gateway.findCodecastByTitle(codecastTitle);
     if (codecast.isEmpty()) throw new RuntimeException(String.format("No code cast for user %s", username));
 
-    Context.gateway.save(new DownloadableLicense(user.get(), codecast.get()));
-    assertTrue(useCase.isLicensedToDownloadCodecast(user.get(), codecast.get()));
+    Context.gateway.save(new License(DOWNLOADING, user.get(), codecast.get()));
+    assertTrue(useCase.isLicencedFor(DOWNLOADING, user.get(), codecast.get()));
   }
 
   @Then("lisence for user {string} able to download {string}")
@@ -105,8 +107,8 @@ public class CodecastPresentation {
     Optional<Codecast> codecast = Context.gateway.findCodecastByTitle(codecastTitle);
     if (codecast.isEmpty()) throw new RuntimeException(String.format("No code cast for user %s", username));
 
-    Context.gateway.save(new License(user.get(), codecast.get()));
-    assertTrue(useCase.isLicensedToDownloadCodecast(user.get(), codecast.get()));
+    Context.gateway.save(new License(DOWNLOADING, user.get(), codecast.get()));
+    assertTrue(useCase.isLicencedFor(DOWNLOADING, user.get(), codecast.get()));
   }
 
   @Then("the user {string} can see codecasts in chronological order")
