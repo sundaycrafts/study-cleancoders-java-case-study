@@ -2,7 +2,7 @@ package com.github.sundaycrafts.cleancoders.casestudy;
 
 import java.util.Objects;
 
-public class Entity {
+public class Entity implements Cloneable {
   private String id;
 
   public void setId(String id) {
@@ -17,4 +17,7 @@ public class Entity {
     return id != null && Objects.equals(id, entity.id);
   }
 
+  public Object clone() throws CloneNotSupportedException {
+    return super.clone();
+  }
 }

@@ -3,20 +3,9 @@ package com.github.sundaycrafts.cleancoders.casestudy;
 import java.util.List;
 import java.util.Optional;
 
-public interface Gateway {
+public interface CodecastGateway {
   List<Codecast> findAllCodecastsSortedChronologically();
-
   void delete(Codecast codecast);
-
   Codecast save(Codecast codecast);
-
-  User save(User user);
-
-  License save(License license);
-
-  Optional<User> findUser(String username);
-
   Optional<Codecast> findCodecastByTitle(String codecastTitle);
-
-  List<License> findLicenseForUserAndCodecast(User user, Codecast codecast);
 }

@@ -18,9 +18,9 @@ public class PresentCodecastUseCaseTest {
 
   @Before
   public void setUp() {
-    Context.gateway = new MockGateway();
-    user = Context.gateway.save(new User("User"));
-    codecast = Context.gateway.save(new Codecast());
+    TestSetup.addInMemoryGatewaysToContext();
+    user = Context.userGateway.save(new User("User"));
+    codecast = Context.codecastGateway.save(new Codecast());
     useCase = new PresentCodecastUseCase();
   }
 
@@ -32,21 +32,21 @@ public class PresentCodecastUseCaseTest {
   @Test
   public void userWithViewLicense_canViewCodecast() {
     License viewLicense = new License(VIEWING, user, codecast);
-    Context.gateway.save(viewLicense);
+    Context.licenseGateway.save(viewLicense);
     assertTrue(useCase.isLicencedFor(VIEWING, user, codecast));
   }
 
   @Test
   public void userWithViewLicense_cannotViewOtherUsersCodecast() {
-    User otherUser = Context.gateway.save(new User("otherUser"));
+    User otherUser = Context.userGateway.save(new User("otherUser"));
     License viewLicense = new License(VIEWING, user, codecast);
-    Context.gateway.save(viewLicense);
+    Context.licenseGateway.save(viewLicense);
     assertFalse(useCase.isLicencedFor(VIEWING, otherUser, codecast));
   }
 
   @Test
   public void presentingNoCodecast() {
-    Context.gateway.delete(codecast);
+    Context.codecastGateway.delete(codecast);
     List<PresentableCodecast> presentableCodecasts = useCase.presentCodecasts(user);
     assertEquals(0, presentableCodecasts.size());
   }
@@ -74,7 +74,7 @@ public class PresentCodecastUseCaseTest {
 
   @Test
   public void presentedCodecastIsViewableIfLicenseExists() {
-    Context.gateway.save(new License(VIEWING, user, codecast));
+    Context.licenseGateway.save(new License(VIEWING, user, codecast));
     List<PresentableCodecast> presentableCodecasts = useCase.presentCodecasts(user);
     PresentableCodecast presentableCodecast = presentableCodecasts.get(0);
     assertTrue(presentableCodecast.isViewable);
@@ -82,7 +82,7 @@ public class PresentCodecastUseCaseTest {
 
   @Test
   public void presentedCodecastIsDownloadableIfDownloadLicenseExists() {
-    Context.gateway.save(new License(DOWNLOADING, user, codecast));
+    Context.licenseGateway.save(new License(DOWNLOADING, user, codecast));
     List<PresentableCodecast> presentableCodecasts = useCase.presentCodecasts(user);
     PresentableCodecast downloadableCodecast = presentableCodecasts.get(0);
     assertTrue(downloadableCodecast.isDownloadable);

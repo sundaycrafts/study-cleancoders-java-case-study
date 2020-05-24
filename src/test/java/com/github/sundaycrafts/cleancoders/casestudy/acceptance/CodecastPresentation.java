@@ -24,7 +24,7 @@ public class CodecastPresentation {
 
   @Before
   public void setUp() {
-    Context.gateway = new MockGateway();
+    TestSetup.addInMemoryGatewaysToContext();
   }
 
   @Given("codecasts")
@@ -39,28 +39,29 @@ public class CodecastPresentation {
       } catch (ParseException e) {
         throw new RuntimeException(e);
       }
-      Context.gateway.save(codecast);
+      Context.codecastGateway.save(codecast);
     });
 
-    assertTrue(Context.gateway.findAllCodecastsSortedChronologically().size() > 0);
+    assertTrue(Context.codecastGateway.findAllCodecastsSortedChronologically().size() > 0);
   }
 
   @Given("no codecast")
   public void deleteAllCodecasts() {
-    List<Codecast> codecasts = Context.gateway.findAllCodecastsSortedChronologically();
-    new ArrayList<>(codecasts).forEach(codecast -> Context.gateway.delete(codecast));
+    Context.codecastGateway
+      .findAllCodecastsSortedChronologically()
+      .forEach(codecast -> Context.codecastGateway.delete(codecast));
 
-    assertEquals(Context.gateway.findAllCodecastsSortedChronologically().size(), 0);
+    assertEquals(0, Context.codecastGateway.findAllCodecastsSortedChronologically().size());
   }
 
   @Given("user {string}")
   public void addUser(String username) {
-    Context.gateway.save(new User(username));
+    Context.userGateway.save(new User(username));
   }
 
   @When("the user {string} logged in")
   public void loginUser(String username) throws RuntimeException {
-    Optional<User> user = Context.gateway.findUser(username);
+    Optional<User> user = Context.userGateway.findUser(username);
     user.ifPresentOrElse(u -> {
       gateKeeper.setLoggedInUser(u);
       assertEquals(gateKeeper.getLoggedInUser(), u);
@@ -77,37 +78,37 @@ public class CodecastPresentation {
 
   @When("license for user {string} able to view {string}")
   public void createLicenceForViewing(String username, String codecastTitle) {
-    Optional<User> user = Context.gateway.findUser(username);
+    Optional<User> user = Context.userGateway.findUser(username);
     if (user.isEmpty()) throw new RuntimeException(String.format("No user %s found", username));
 
-    Optional<Codecast> codecast = Context.gateway.findCodecastByTitle(codecastTitle);
+    Optional<Codecast> codecast = Context.codecastGateway.findCodecastByTitle(codecastTitle);
     if (codecast.isEmpty()) throw new RuntimeException(String.format("No code cast for user %s", username));
 
-    Context.gateway.save(new License(VIEWING, user.get(), codecast.get()));
+    Context.licenseGateway.save(new License(VIEWING, user.get(), codecast.get()));
     assertTrue(useCase.isLicencedFor(VIEWING, user.get(), codecast.get()));
   }
 
   @When("license for user {string} able to download {string}")
   public void createLicenceForDownload(String username, String codecastTitle) {
-    Optional<User> user = Context.gateway.findUser(username);
+    Optional<User> user = Context.userGateway.findUser(username);
     if (user.isEmpty()) throw new RuntimeException(String.format("No user %s found", username));
 
-    Optional<Codecast> codecast = Context.gateway.findCodecastByTitle(codecastTitle);
+    Optional<Codecast> codecast = Context.codecastGateway.findCodecastByTitle(codecastTitle);
     if (codecast.isEmpty()) throw new RuntimeException(String.format("No code cast for user %s", username));
 
-    Context.gateway.save(new License(DOWNLOADING, user.get(), codecast.get()));
+    Context.licenseGateway.save(new License(DOWNLOADING, user.get(), codecast.get()));
     assertTrue(useCase.isLicencedFor(DOWNLOADING, user.get(), codecast.get()));
   }
 
   @Then("lisence for user {string} able to download {string}")
   public void createLicenceForDownloading(String username, String codecastTitle) {
-    Optional<User> user = Context.gateway.findUser(username);
+    Optional<User> user = Context.userGateway.findUser(username);
     if (user.isEmpty()) throw new RuntimeException(String.format("No user %s found", username));
 
-    Optional<Codecast> codecast = Context.gateway.findCodecastByTitle(codecastTitle);
+    Optional<Codecast> codecast = Context.codecastGateway.findCodecastByTitle(codecastTitle);
     if (codecast.isEmpty()) throw new RuntimeException(String.format("No code cast for user %s", username));
 
-    Context.gateway.save(new License(DOWNLOADING, user.get(), codecast.get()));
+    Context.licenseGateway.save(new License(DOWNLOADING, user.get(), codecast.get()));
     assertTrue(useCase.isLicencedFor(DOWNLOADING, user.get(), codecast.get()));
   }
 

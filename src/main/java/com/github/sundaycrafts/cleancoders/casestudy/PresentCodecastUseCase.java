@@ -11,7 +11,7 @@ public class PresentCodecastUseCase {
   private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
   public List<PresentableCodecast> presentCodecasts(User loggedInUser) {
-    List<Codecast> allCodecasts = Context.gateway.findAllCodecastsSortedChronologically();
+    List<Codecast> allCodecasts = Context.codecastGateway.findAllCodecastsSortedChronologically();
 
     ArrayList<PresentableCodecast> presentableCodecasts = new ArrayList<>();
     allCodecasts.forEach(codecast -> presentableCodecasts.add(formatCodecast(loggedInUser, codecast)));
@@ -29,7 +29,7 @@ public class PresentCodecastUseCase {
   }
 
   public boolean isLicencedFor(License.LicenseType licenseType, User user, Codecast codecast) {
-    List<License> licenses = Context.gateway.findLicenseForUserAndCodecast(user, codecast);
+    List<License> licenses = Context.licenseGateway.findLicenseForUserAndCodecast(user, codecast);
     return licenses.stream().anyMatch(l -> l.getType() == licenseType);
   }
 }
