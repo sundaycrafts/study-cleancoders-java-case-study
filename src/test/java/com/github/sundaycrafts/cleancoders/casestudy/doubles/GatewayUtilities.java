@@ -2,43 +2,38 @@ package com.github.sundaycrafts.cleancoders.casestudy.doubles;
 
 import com.github.sundaycrafts.cleancoders.casestudy.Entity;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class GatewayUtilities<T extends Entity> {
-  private final List<T> entities;
+  private final HashMap<String, T> entities;
 
   public GatewayUtilities() {
-    this.entities = new ArrayList<>();
+    this.entities = new HashMap<>();
   }
 
   public void delete(T entity) {
-    entities.remove(entity);
+    entities.remove(entity.getId());
   }
 
   public T save(T entity) {
-    entities.add(establishId(entity));
+    if (entity.getId() == null)
+      entity.setId(UUID.randomUUID().toString());
+    entities.put(entity.getId(), cloneEntity(entity));
     return entity;
   }
 
-  protected T establishId(T entity) {
-    if (entity.getId() == null)
-      entity.setId(UUID.randomUUID().toString());
-    return entity;
+  public Stream<T> getEntities() {
+    return entities.values().stream().map(this::cloneEntity);
   }
 
   @SuppressWarnings("unchecked")
-  public Stream<T> getEntities() {
-    return entities.stream().map(e -> {
-      try {
-        return (T) e.clone();
-      } catch (CloneNotSupportedException cloneNotSupportedException) {
-        throw new UnCloneableEntity();
-      }
-    });
+  private T cloneEntity(T entity) {
+    try {
+      return (T) entity.clone();
+    } catch (CloneNotSupportedException cloneNotSupportedException) {
+      throw new UnCloneableEntity();
+    }
   }
 
   private static class UnCloneableEntity extends RuntimeException {

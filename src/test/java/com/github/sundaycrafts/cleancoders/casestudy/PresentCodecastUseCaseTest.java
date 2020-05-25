@@ -56,11 +56,12 @@ public class PresentCodecastUseCaseTest {
     codecast.setTitle("Some Title");
     Date now = new GregorianCalendar(2020, Calendar.MAY, 23).getTime();
     codecast.setPublicationDate(now);
+    Context.codecastGateway.save(codecast);
+
     List<PresentableCodecast> presentableCodecasts = useCase.presentCodecasts(user);
+    PresentableCodecast presentableCodecast = presentableCodecasts.get(0);
 
     assertEquals(1, presentableCodecasts.size());
-
-    PresentableCodecast presentableCodecast = presentableCodecasts.get(0);
     assertEquals("Some Title", presentableCodecast.title);
     assertEquals("23/05/2020", presentableCodecast.publicationDate);
   }

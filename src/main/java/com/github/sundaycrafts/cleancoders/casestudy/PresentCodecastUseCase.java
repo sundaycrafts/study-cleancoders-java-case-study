@@ -1,8 +1,8 @@
 package com.github.sundaycrafts.cleancoders.casestudy;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.github.sundaycrafts.cleancoders.casestudy.License.LicenseType.DOWNLOADING;
 import static com.github.sundaycrafts.cleancoders.casestudy.License.LicenseType.VIEWING;
@@ -11,12 +11,9 @@ public class PresentCodecastUseCase {
   private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
   public List<PresentableCodecast> presentCodecasts(User loggedInUser) {
-    List<Codecast> allCodecasts = Context.codecastGateway.findAllCodecastsSortedChronologically();
-
-    ArrayList<PresentableCodecast> presentableCodecasts = new ArrayList<>();
-    allCodecasts.forEach(codecast -> presentableCodecasts.add(formatCodecast(loggedInUser, codecast)));
-
-    return presentableCodecasts;
+    return Context.codecastGateway.findAllCodecastsSortedChronologically().stream()
+      .map(codecast -> formatCodecast(loggedInUser, codecast))
+      .collect(Collectors.toList());
   }
 
   private PresentableCodecast formatCodecast(User loggedInUser, Codecast codecast) {
@@ -29,7 +26,7 @@ public class PresentCodecastUseCase {
   }
 
   public boolean isLicencedFor(License.LicenseType licenseType, User user, Codecast codecast) {
-    List<License> licenses = Context.licenseGateway.findLicenseForUserAndCodecast(user, codecast);
-    return licenses.stream().anyMatch(l -> l.getType() == licenseType);
+    return Context.licenseGateway.findLicenseForUserAndCodecast(user, codecast).stream()
+      .anyMatch(l -> l.getType() == licenseType);
   }
 }
