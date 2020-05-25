@@ -19,12 +19,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CodecastPresentation {
   private final PresentCodecastUseCase useCase = new PresentCodecastUseCase();
-  private final GateKeeper gateKeeper = new GateKeeper();
   private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
   @Before
   public void setUp() {
-    TestSetup.addInMemoryGatewaysToContext();
+    TestSetup.setupContext();
   }
 
   @Given("codecasts")
@@ -63,8 +62,8 @@ public class CodecastPresentation {
   public void loginUser(String username) throws RuntimeException {
     Optional<User> user = Context.userGateway.findUser(username);
     user.ifPresentOrElse(u -> {
-      gateKeeper.setLoggedInUser(u);
-      assertEquals(gateKeeper.getLoggedInUser(), u);
+      Context.gateKeeper.setLoggedInUser(u);
+      assertEquals(Context.gateKeeper.getLoggedInUser(), u);
     }, () -> {
       throw new RuntimeException();
     });
@@ -72,7 +71,7 @@ public class CodecastPresentation {
 
   @Then("cannot see any codecasts")
   public void countOfCodecastsPresented() {
-    List<PresentableCodecast> presentations = useCase.presentCodecasts(gateKeeper.getLoggedInUser());
+    List<PresentableCodecast> presentations = useCase.presentCodecasts(Context.gateKeeper.getLoggedInUser());
     assertEquals(0, presentations.size());
   }
 
@@ -114,7 +113,7 @@ public class CodecastPresentation {
 
   @Then("the user {string} can see codecasts in chronological order")
   public void theUserCanSeeLicensedCodecastSForThemInChronologicalOrder(String username, DataTable table) {
-    User loggedInUser = gateKeeper.getLoggedInUser();
+    User loggedInUser = Context.gateKeeper.getLoggedInUser();
     PresentCodecastUseCase useCase = new PresentCodecastUseCase();
     List<PresentableCodecast> presentableCodecasts = useCase.presentCodecasts(loggedInUser);
     List<Map<String, String>> queryResponse = presentableCodecasts.stream().map(pcc -> new HashMap<String, String>() {{
