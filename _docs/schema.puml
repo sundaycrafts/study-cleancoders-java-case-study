@@ -7,27 +7,32 @@ package Core {
   class User
   class Codecast
   class License
-  interface Gateway
-  class MockGateway
+  interface CodecastGateway
+  interface LicenseGateway
+  interface UserGateway
+  class DAO
+  class Context
   class PresentableCodecast <<DS>>
   class PresentCodecastUsecase
-  interface Gatekeeper {
+  class Gatekeeper {
     ---
     + setLoginUser
   }
 }
 
-Database <-- MockGateway
-PresentCodecastUsecase --> Codecast
-PresentCodecastUsecase --> License
-PresentCodecastUsecase --> Gateway
-PresentCodecastUsecase --> User
-Gateway --> Codecast
-Gateway --> License
-Gateway --> User
-License --> Codecast
-License --> User
-MockGateway --|> Gateway
+PresentCodecastUsecase --> Context
+Context --> UserGateway
+Context --> LicenseGateway
+Context --> CodecastGateway
+Context --> Gatekeeper
+LicenseGateway <|-- DAO
+CodecastGateway <|-- DAO
+UserGateway <|-- DAO
+LicenseGateway --> Codecast
+LicenseGateway --> License
+LicenseGateway --> User
+CodecastGateway --> Codecast
+DAO --> Database
 User --|> Entity
 License --|> Entity
 Codecast --|> Entity
