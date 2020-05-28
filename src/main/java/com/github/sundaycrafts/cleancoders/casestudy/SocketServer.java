@@ -2,18 +2,22 @@ package com.github.sundaycrafts.cleancoders.casestudy;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class SocketServer {
   private int port;
   private SocketService service;
   private boolean running;
   private ServerSocket serverSocket;
+  private ExecutorService executor;
 
   public SocketServer(int port, SocketService service) throws Exception {
     this.port = port;
     this.service = service;
     this.serverSocket = new ServerSocket(port);
+    this.executor = Executors.newFixedThreadPool(4);
   }
 
   public int getPort() {
@@ -24,12 +28,12 @@ public class SocketServer {
     return service;
   }
 
-  public void start() throws IOException  {
-    var executor = Executors.newFixedThreadPool(4);
+  public void start() {
     var connectionHandler = new Runnable() {
       public void run() {
         try {
           var serviceSocket = serverSocket.accept();
+          service.serve(serviceSocket);
         } catch (IOException e) {
           if (running)
             e.printStackTrace();
@@ -45,7 +49,8 @@ public class SocketServer {
     return running;
   }
 
-  public void stop() throws IOException {
+  public void stop() throws IOException, InterruptedException {
+    executor.awaitTermination(500, TimeUnit.MICROSECONDS);
     serverSocket.close();
     running = false;
   }
