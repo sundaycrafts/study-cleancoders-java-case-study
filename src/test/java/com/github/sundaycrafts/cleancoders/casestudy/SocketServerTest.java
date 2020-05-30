@@ -52,11 +52,12 @@ public class SocketServerTest {
   }
 
   @Test
-  void canSendAndReceive() throws IOException {
+  void canSendAndReceive() throws IOException, InterruptedException {
     server.start();
     var s = new Socket("localhost", port);
     var os = s.getOutputStream();
     os.write("hello\n".getBytes());
+    server.stop();
 
     assertEquals("hello", service.message);
   }
