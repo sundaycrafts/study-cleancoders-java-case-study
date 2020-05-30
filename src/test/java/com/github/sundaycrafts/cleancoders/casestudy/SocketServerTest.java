@@ -4,7 +4,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.Socket;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -49,11 +51,34 @@ public class SocketServerTest {
     assertEquals(1, service.connections);
   }
 
+  @Test
+  void canSendAndReceive() throws IOException {
+    server.start();
+    var s = new Socket("localhost", port);
+    var os = s.getOutputStream();
+    os.write("hello\n".getBytes());
+
+    assertEquals("hello", service.message);
+  }
+
   public static class FakeSocketService implements SocketService {
     public int connections;
+    public String message;
 
     public void serve(Socket s) {
       connections++;
+
+      try {
+        var is = s.getInputStream();
+        var isr = new InputStreamReader(is);
+        var br = new BufferedReader(isr);
+
+        message = br.readLine();
+
+        s.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
   }
 }
