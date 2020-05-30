@@ -54,4 +54,8 @@ public class SocketServer {
     serverSocket.close();
     running = false;
   }
+
+  public void setService(SocketService socketService) {
+    service = socketService;
+  }
 }
